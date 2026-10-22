@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Actividades autocorregidas para Google Classroom</title>
+<meta name="description" content="Aplicación de Google Apps Script para actividades interactivas que se corrigen solas y vuelcan la nota a Google Classroom. Ejemplo: plásticos e impresión 3D, 3º ESO.">
+<style>
+  :root{
+    --bg:#f6f1e7; --card:#fffdf8; --ink:#2b3a38; --muted:#5d6d6a;
+    --teal:#2f7f79; --teal-d:#1f5c57; --sun:#e9b44c; --line:#e3dac8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#1d2625; --card:#263231; --ink:#eef0e8; --muted:#a9b8b4; --teal:#6cc3ba; --teal-d:#8fd6ce; --sun:#e9b44c; --line:#3a4947; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header{padding:56px 0 32px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-d);font-weight:600}
+  h1{font-size:clamp(28px,5vw,42px);line-height:1.15;margin:.3em 0 .4em}
+  .lead{font-size:19px;color:var(--muted);max-width:640px}
+  .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+  .btn{display:inline-block;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600;border:2px solid var(--teal);color:var(--teal-d)}
+  .btn.main{background:var(--teal);color:#fff}
+  @media (prefers-color-scheme: dark){ .btn.main{color:#10201e} }
+  section{padding:28px 0}
+  h2{font-size:26px;margin:0 0 14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .card h3{margin:0 0 6px;font-size:18px}
+  .card p{margin:0;color:var(--muted);font-size:16px}
+  ol.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+  ol.steps li{counter-increment:s;position:relative;padding:0 0 14px 48px}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--sun);color:#2b2b2b;font-weight:700;display:flex;align-items:center;justify-content:center}
+  code{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.92em}
+  .note{background:var(--card);border-left:5px solid var(--sun);border-radius:8px;padding:14px 18px;color:var(--muted)}
+  a{color:var(--teal-d)}
+  footer{border-top:1px solid var(--line);margin-top:24px;padding:24px 0 48px;color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">Google Apps Script · Google Classroom</span>
+  <h1>Actividades interactivas que se corrigen solas</h1>
+  <p class="lead">Una aplicación para que tu alumnado haga actividades en línea, reciba su nota al momento y la calificación llegue a Classroom como borrador. Tú la revisas y la publicas.</p>
+  <div class="btns">
+    <a class="btn main" href="https://github.com/MrSpock74/actividades-autocorregidas-plasticos-impresion-3d-3eso">Ver el código en GitHub</a>
+    <a class="btn" href="#instalar">Cómo instalarla</a>
+  </div>
+</header>
+
+<section>
+  <h2>Qué hace</h2>
+  <div class="grid">
+    <div class="card"><h3>10 tipos de pregunta</h3><p>Test, verdadero/falso, respuesta múltiple, numérica, completar, relacionar, clasificar, ordenar, rotular una imagen y respuesta escrita.</p></div>
+    <div class="card"><h3>Corrección en el servidor</h3><p>Las soluciones nunca llegan al navegador del alumnado y las opciones se barajan en cada intento.</p></div>
+    <div class="card"><h3>Respuestas escritas</h3><p>Se corrigen por palabras clave, toleran faltas leves y negaciones, y tú puedes ajustar la nota a mano.</p></div>
+    <div class="card"><h3>Nota a Classroom</h3><p>La nota llega como borrador de calificación y los resultados quedan también en una hoja de cálculo tuya.</p></div>
+    <div class="card"><h3>Intentos configurables</h3><p>Decide cuántos intentos hay y si cuenta el último o el mejor. El alumnado puede repetir o ver las soluciones.</p></div>
+    <div class="card"><h3>Panel del profesorado</h3><p>Crea las tareas, consulta resultados, reabre intentos y reenvía notas desde una sola pantalla.</p></div>
+  </div>
+</section>
+
+<section id="instalar">
+  <h2>Cómo instalarla</h2>
+  <p>Solo hay que hacerlo una vez. No necesitas saber programar: se trata de copiar y pegar.</p>
+  <ol class="steps">
+    <li>Descarga los archivos del repositorio (botón verde <strong>Code</strong> → <strong>Download ZIP</strong> en GitHub).</li>
+    <li>Entra en <a href="https://script.google.com">script.google.com</a> y crea un <strong>Nuevo proyecto</strong>.</li>
+    <li>Crea los archivos con los mismos nombres (<code>Code</code>, <code>Motor</code>, <code>Banco</code>, <code>Imagenes</code>, <code>Index</code>, <code>Panel</code>) y pega el contenido de cada uno.</li>
+    <li>En <code>Code.gs</code>, cambia el correo de <code>PROFES</code> por el tuyo y ajusta las clases y los intentos.</li>
+    <li>Añade el servicio <strong>Google Classroom API</strong> y ejecuta una vez la función <code>autorizar</code>.</li>
+    <li>Pulsa <strong>Implementar → Nueva implementación → Aplicación web</strong> y copia la dirección que termina en <code>/exec</code>.</li>
+    <li>Abre esa dirección añadiendo <code>?page=panel</code>, pega los enlaces de tus clases y crea las tareas en Classroom.</li>
+  </ol>
+  <p class="note">La explicación completa, con los requisitos y las limitaciones, está en el <a href="https://github.com/MrSpock74/actividades-autocorregidas-plasticos-impresion-3d-3eso#readme">README del repositorio</a>. Necesitas una cuenta de Google Workspace for Education con acceso a la API de Classroom; algunos centros la tienen restringida.</p>
+</section>
+
+<section>
+  <h2>Usarla con otro contenido</h2>
+  <p>La versión de ejemplo trabaja <em>Plásticos e impresión 3D</em> (Tecnología y Digitalización, 3º ESO), pero está pensada para cualquier materia. Para cambiar el contenido solo hay que editar el archivo <code>Banco.gs</code> (preguntas, criterios y explicaciones) y las imágenes. El resto de la aplicación no se toca.</p>
+</section>
+
+<section>
+  <h2>Protección de datos</h2>
+  <p>El código no contiene datos de alumnado. Los intentos y las notas se guardan en una hoja de cálculo que la aplicación crea en <strong>tu</strong> Drive, no en ningún servidor externo.</p>
+</section>
+
+<footer>
+  <p><strong>Manuel Romero Fraidía</strong> · Departamento de Tecnología · IES Murillo, Sevilla.</p>
+  <p>El código y el trabajo original se publican con licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 (CC BY-NC-SA 4.0)</a>.</p>
+  <p>El contenido de ejemplo se basa en la unidad 3 del libro de Donostiarra (Proyecto STAR), incluido con permiso de la editorial y no cubierto por esa licencia, y en las fichas de <a href="https://www.yourtechnologyweb.com">yourtechnologyweb</a> (CC0).</p>
+</footer>
+
+</div>
+</body>
+</html>
